@@ -8,7 +8,7 @@ import "./styles/style.css";
 
 function App() {
   return (
-    <HashRouter basename="/react-pexel-project">
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Homepage />}></Route>
