@@ -1,98 +1,85 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Search from "../components/Search";
 import axios from "axios";
 import Picture from "../components/Picture";
 
+const AUTH = "DgPR2YXdyKxdjQdqMFcuhKWEmz8yLDFWS3QvpEDKezgqup7GVlqoWShi";
+const PER_PAGE = 15;
+
+const getPhotosUrl = (query, page, perPage = PER_PAGE) => {
+  const params = new URLSearchParams({
+    page: String(page),
+    per_page: String(perPage),
+  });
+
+  if (query) {
+    params.set("query", query);
+    return `https://api.pexels.com/v1/search?${params.toString()}`;
+  }
+
+  return `https://api.pexels.com/v1/curated?${params.toString()}`;
+};
+
 const Homepage = () => {
-  let [input, setInput] = useState("");
-  let [data, setData] = useState([]);
-  let [page, setPage] = useState(1);
-  let [currentSearch, setCurrentSearch] = useState("");
-  let [isLoading, setIsLoading] = useState(false); //
-  const picturesRef = useRef(null);
+  const [input, setInput] = useState("");
+  const [photos, setPhotos] = useState([]);
+  const [page, setPage] = useState(1);
+  const [currentSearch, setCurrentSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const auth = "DgPR2YXdyKxdjQdqMFcuhKWEmz8yLDFWS3QvpEDKezgqup7GVlqoWShi";
-  const initialURL = "https://api.pexels.com/v1/curated?page=1&per_page=15";
-  let searchURL = `https://api.pexels.com/v1/search?query=${input}&per_page=15&page=1`;
-
-  const search = async (url) => {
-    setPage(1);
-
-    let result = await axios.get(url, {
-      headers: { Authorization: auth },
+  const fetchPhotos = useCallback(async (query, pageNumber) => {
+    const result = await axios.get(getPhotosUrl(query, pageNumber), {
+      headers: { Authorization: AUTH },
     });
-    setData(result.data.photos);
-    setCurrentSearch(input);
-  };
+
+    return result.data.photos || [];
+  }, []);
+
+  const search = useCallback(async () => {
+    const query = input.trim();
+    const nextPhotos = await fetchPhotos(query, 1);
+
+    setPhotos(nextPhotos);
+    setCurrentSearch(query);
+    setPage(1);
+  }, [fetchPhotos, input]);
 
   const morePicture = async () => {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
-      const neededCount = 15;
-      let currentPage = page;
-      let collectedPhotos = [];
-      while (collectedPhotos.length < neededCount) {
-        currentPage += 1;
-        const stillNeeded = neededCount - collectedPhotos.length;
+      const nextPage = page + 1;
+      const newPhotos = await fetchPhotos(currentSearch, nextPage);
+      const existingIds = new Set(photos.map((photo) => photo.id));
+      const uniquePhotos = newPhotos.filter(
+        (photo) => !existingIds.has(photo.id),
+      );
 
-        let newURL;
-
-        if (currentSearch === "") {
-          newURL = `https://api.pexels.com/v1/curated?page=${currentPage}&per_page=${stillNeeded}`;
-        } else {
-          newURL = `https://api.pexels.com/v1/search?query=${currentSearch}&per_page=${stillNeeded}&page=${currentPage}`;
-        }
-
-        let result = await axios.get(newURL, {
-          headers: { Authorization: auth },
-        });
-        const newPhotos = result.data.photos;
-        if (!newPhotos || newPhotos.length === 0) break;
-
-        // 過濾掉重複的圖片
-        const filtered = newPhotos.filter(
-          (newPhoto) =>
-            !data.some((oldPhoto) => oldPhoto.id === newPhoto.id) &&
-            !collectedPhotos.some((c) => c.id === newPhoto.id),
-        );
-
-        collectedPhotos = [...collectedPhotos, ...filtered];
-      }
-
-      setPage(currentPage);
-      setData((prevData) => [...prevData, ...collectedPhotos]);
+      setPhotos((prevPhotos) => [...prevPhotos, ...uniquePhotos]);
+      setPage(nextPage);
     } finally {
-      setIsLoading(false); // 無論成功或失敗都解鎖
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    search(initialURL);
-  }, []); //一打開網頁執行函式
+    fetchPhotos("", 1).then((initialPhotos) => {
+      setPhotos(initialPhotos);
+    });
+  }, [fetchPhotos]);
 
   return (
     <div style={{ minHeight: "100vh" }}>
-      <Search
-        search={() => {
-          if (input.trim() === "") {
-            search(initialURL); // 如果是空的，執行初始的精選照片網址
-          } else {
-            search(searchURL);
-          }
-        }}
-        setInput={setInput}
-      />
-      <div className="pictures" ref={picturesRef}>
-        {data &&
-          data.map((d) => {
-            return <Picture data={d} key={d.id} />;
-          })}
+      <Search search={search} setInput={setInput} />
+      <div className="pictures">
+        {photos.map((photo) => (
+          <Picture data={photo} key={photo.id} />
+        ))}
       </div>
       <div className="morePicture">
         <button onClick={morePicture} disabled={isLoading}>
-          {isLoading ? "載入中..." : "更多圖片"}
+          {isLoading ? "Loading..." : "Load more"}
         </button>
       </div>
     </div>

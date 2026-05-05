@@ -1,10 +1,9 @@
-@charset "UTF-8";
 nav {
   display: flex;
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.506);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  align-items: center; /* 垂直置中 */
+  align-items: center;
   padding: 0.5rem 5%;
   font-size: 2rem;
 }
@@ -27,15 +26,14 @@ nav ul li a {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem 0rem;
+  padding: 3rem 0;
   border-bottom: 2px solid rgba(152, 152, 152, 0.08);
 }
 .search input,
 .search button {
   height: 3rem;
-  font-size: 2.5vh;
+  font-size: 1rem;
   font-family: inherit;
-  box-sizing: border-box;
   border: 1px solid rgba(150, 150, 150, 0.377);
 }
 .search input {
@@ -44,7 +42,7 @@ nav ul li a {
   padding: 0.5rem;
   color: var(--text-primary);
   background: var(--surface);
-  border-radius: 4px 0 0 4px;
+  border-radius: var(--radius) 0 0 var(--radius);
   border-right: none;
 }
 @media (min-width: 768px) {
@@ -58,18 +56,13 @@ nav ul li a {
   background: rgba(255, 208, 121, 0.2549019608);
   color: rgb(227, 227, 227);
   cursor: pointer;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  transition: background-color var(--transition);
 }
-@media (min-width: 768px) {
-  .search button {
-    width: 20%;
-  }
-}
-.search button button:hover {
+.search button:hover {
   background: #917b50;
 }
 @media (min-width: 768px) {
@@ -98,11 +91,11 @@ nav ul li a {
 .pictures .picture {
   padding: 1rem;
   width: 100%;
-  position: relative; /* 作者名稱定位的基準 */
+  position: relative;
 }
 @media (min-width: 768px) {
   .pictures .picture {
-    width: 20%;
+    width: 50%;
   }
 }
 @media (min-width: 1024px) {
@@ -125,22 +118,22 @@ nav ul li a {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
-  transition: all 0.3s ease;
-  border-radius: 3px 3px 3px 3px;
+  transition: transform 0.3s ease;
+  border-radius: 3px;
 }
 .pictures .picture .imageContainer img:hover {
-  transform: scale(1.25);
+  transform: scale(1.08);
 }
 
-/* 作者名 */
 .photo-card__author {
   position: absolute;
   top: 12px;
   left: 14px;
+  z-index: 1;
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.72);
   background: rgba(0, 0, 0, 0.4);
   padding: 4px 10px;
   border-radius: 2px;
@@ -148,27 +141,113 @@ nav ul li a {
   transition: color 0.3s ease;
 }
 
-.photo-card:hover .photo-card__author {
-  color: rgba(255, 255, 255, 0.9);
+.picture:hover .photo-card__author {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.projects-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 420px));
+  justify-content: center;
+  gap: 20px;
+  padding: 1rem;
+}
+.projects-container h2 {
+  padding: 0.75rem 0 0.5rem;
+}
+.projects-container span {
+  display: inline-flex;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(101, 98, 98, 0.8470588235);
+  margin: 2px;
+}
+.projects-container p {
+  margin: 0.75rem 0;
+  line-height: 1.6;
+}
+.projects-container .project-card {
+  background: #111;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition), border-color var(--transition);
+}
+.projects-container .project-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-hover);
+}
+.projects-container .project-card .project-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.projects-container .project-card .card_btn {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.projects-container .project-card .card_btn a {
+  padding: 0.55rem 0.8rem;
+  border-radius: 4px;
+}
+.projects-container .project-card .btn_primary {
+  background: #fff;
+  color: #000;
+}
+.projects-container .project-card .btn_secondary {
+  border: 1px solid #fff;
+  color: #fff;
+}
+.projects-container .project-card .project-image {
+  width: 100%;
+  height: 180px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  border-radius: 4px;
+  background: #0a0a0a;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2vh;
+}
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #111;
+  --text-primary: rgba(255, 255, 255, 0.946);
+  --text-muted: rgb(177, 177, 177);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --accent: #ac8b4a;
+  --radius: 4px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: rgba(255, 255, 255, 0.946);
+  color: var(--text-primary);
   font-family: "Playfair Display", Georgia, serif;
 }
 
 body {
-  color: rgb(157, 157, 157);
-  font-family: var(--font-body);
-  background-color: black;
+  color: var(--text-muted);
+  font-family: "DM Sans", Arial, sans-serif;
+  background-color: var(--bg);
 }
 
 a {
   text-decoration: none;
-  color: rgb(177, 177, 177);
+  color: var(--text-muted);
 }
 
 ul {
@@ -178,8 +257,8 @@ ul {
 button {
   font-size: 1rem;
   padding: 0.25rem;
-  border: 3px solid rgb(68, 68, 68);
-  border-radius: 4px 4px 4px 4px;
+  border: 1.5px solid rgb(68, 68, 68);
+  border-radius: var(--radius);
 }
 
 .morePicture {
@@ -191,15 +270,22 @@ button {
 .morePicture button {
   padding: 0.5rem 0.75rem;
   font-size: 1.5rem;
-  border: none;
-  background-color: rgb(0, 0, 0);
-  border: 1.5px solid rgb(68, 68, 68);
-  border-radius: 4px 4px 4px 4px;
+  background-color: transparent;
   cursor: pointer;
+  transition: border-color var(--transition), opacity var(--transition);
+}
+.morePicture button:hover:not(:disabled) {
+  border-color: var(--border-hover);
+}
+.morePicture button:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
-.about {
+.page-404 {
   display: flex;
+  min-height: 80vh;
   align-items: center;
-  align-content: center;
+  justify-content: center;
+  font-size: 2rem;
 }/*# sourceMappingURL=style.css.map */

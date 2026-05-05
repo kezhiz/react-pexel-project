@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Search = ({ search, setInput }) => {
   const inputHandler = (e) => {
-    setInput(e.target.value); // 使用者打字時更新 state
+    setInput(e.target.value);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      search(); // 如果按下的鍵是 Enter，就執行搜尋
+      search();
     }
   };
 

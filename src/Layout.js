@@ -1,7 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 import React from "react";
 import Footer from "./components/Footer";
-import "./styles/style.css";
 
 const Layout = () => {
   return (
@@ -14,9 +13,9 @@ const Layout = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
-          {/* <li>
-            <Link to="about">About</Link>
-          </li> */}
+          <li>
+            <Link to="/Projects">Projects</Link>
+          </li>
         </ul>
       </nav>
 
