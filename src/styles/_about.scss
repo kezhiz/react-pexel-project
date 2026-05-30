@@ -1,0 +1,38 @@
+.about-split-container {
+  display: flex !important;
+  width: 100%;
+  height: calc(100vh - 80px); /* 扣除頂部導覽列的高度 */
+  overflow: hidden;
+}
+
+.circle-img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover; /* 關鍵：防止圖片被壓扁 */
+  clip-path: circle(50% at 50% 50%); /* 裁切成圓形 */
+}
+
+/* About 專屬左半邊 */
+.about-left-side {
+  width: 300px;
+  min-width: 300px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* About 專屬右半邊 */
+.about-right-side {
+  flex: 1;
+  background-color: #000000; /* 全黑背景 */
+  padding: 40px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  color: #ffffff;
+}
+
+/* 修正大標題樣式，避免它因為絕對定位而飄走 */
+.about-title {
+  font-size: 4rem;
+  margin: 0 0 20px 0;
+  position: static !important; /* 確保它遵循 flex 排版，不重疊 */
+}

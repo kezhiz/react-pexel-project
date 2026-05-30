@@ -18,6 +18,24 @@ $font-body: "DM Sans", Arial, sans-serif;
   --radius: 4px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.root-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 4rem;
+}
 
 * {
   margin: 0;
@@ -28,6 +46,7 @@ $font-body: "DM Sans", Arial, sans-serif;
 }
 
 body {
+  padding-top: 0;
   color: var(--text-muted);
   font-family: $font-body;
   background-color: var(--bg);
@@ -60,7 +79,9 @@ button {
     font-size: 1.5rem;
     background-color: transparent;
     cursor: pointer;
-    transition: border-color var(--transition), opacity var(--transition);
+    transition:
+      border-color var(--transition),
+      opacity var(--transition);
 
     &:hover:not(:disabled) {
       border-color: var(--border-hover);
@@ -79,4 +100,15 @@ button {
   align-items: center;
   justify-content: center;
   font-size: 2rem;
+}
+
+.hometitle {
+  font-size: 5rem;
+}
+
+.marquee-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
 }

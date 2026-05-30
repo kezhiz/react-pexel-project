@@ -1,89 +1,44 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Search from "../components/Search";
-import axios from "axios";
-import Picture from "../components/Picture";
+import React from "react";
+import TextType from "../components/TextType";
+import DotGrid from "../components/DotGrid";
+import CurvedLoop from "../components/CurvedLoop";
+import { Link } from "react-router-dom";
 
-const AUTH = "DgPR2YXdyKxdjQdqMFcuhKWEmz8yLDFWS3QvpEDKezgqup7GVlqoWShi";
-const PER_PAGE = 15;
-
-const getPhotosUrl = (query, page, perPage = PER_PAGE) => {
-  const params = new URLSearchParams({
-    page: String(page),
-    per_page: String(perPage),
-  });
-
-  if (query) {
-    params.set("query", query);
-    return `https://api.pexels.com/v1/search?${params.toString()}`;
-  }
-
-  return `https://api.pexels.com/v1/curated?${params.toString()}`;
-};
-
-const Homepage = () => {
-  const [input, setInput] = useState("");
-  const [photos, setPhotos] = useState([]);
-  const [page, setPage] = useState(1);
-  const [currentSearch, setCurrentSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchPhotos = useCallback(async (query, pageNumber) => {
-    const result = await axios.get(getPhotosUrl(query, pageNumber), {
-      headers: { Authorization: AUTH },
-    });
-
-    return result.data.photos || [];
-  }, []);
-
-  const search = useCallback(async () => {
-    const query = input.trim();
-    const nextPhotos = await fetchPhotos(query, 1);
-
-    setPhotos(nextPhotos);
-    setCurrentSearch(query);
-    setPage(1);
-  }, [fetchPhotos, input]);
-
-  const morePicture = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
-
-    try {
-      const nextPage = page + 1;
-      const newPhotos = await fetchPhotos(currentSearch, nextPage);
-      const existingIds = new Set(photos.map((photo) => photo.id));
-      const uniquePhotos = newPhotos.filter(
-        (photo) => !existingIds.has(photo.id),
-      );
-
-      setPhotos((prevPhotos) => [...prevPhotos, ...uniquePhotos]);
-      setPage(nextPage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPhotos("", 1).then((initialPhotos) => {
-      setPhotos(initialPhotos);
-    });
-  }, [fetchPhotos]);
-
+function HomePage() {
   return (
-    <div style={{ minHeight: "100vh" }}>
-      <Search search={search} setInput={setInput} />
-      <div className="pictures">
-        {photos.map((photo) => (
-          <Picture data={photo} key={photo.id} />
-        ))}
-      </div>
-      <div className="morePicture">
-        <button onClick={morePicture} disabled={isLoading}>
-          {isLoading ? "Loading..." : "Load more"}
-        </button>
+    <div>
+      <div style={{ width: "100%", height: "760px", position: "relative" }}>
+        <DotGrid
+          dotSize={5}
+          gap={15}
+          baseColor="#182127"
+          activeColor="#27caff"
+          proximity={120}
+          shockRadius={250}
+          shockStrength={5}
+          resistance={750}
+          returnDuration={1.5}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            color: "white",
+            textAlign: "center",
+            pointerEvents: "none",
+          }}
+        >
+          <h1 style={{ fontSize: "7rem", margin: 0, fontWeight: "bold" }}>
+            Zhiyu's Portfalio
+          </h1>
+          <p style={{ fontSize: "1.5rem", opacity: 0.8 }}>Creative Developer</p>
+        </div>
       </div>
     </div>
   );
-};
+}
 
-export default Homepage;
+export default HomePage;

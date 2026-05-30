@@ -4,22 +4,34 @@ import Footer from "./components/Footer";
 
 const Layout = () => {
   return (
-    <div>
+    <div className="root-container">
       <nav>
         <Link to="/" className="navbar_logo">
-          ZHI<span>YU</span>
+          ZHIYU
         </Link>
         <ul>
           <li>
             <Link to="/">Home</Link>
           </li>
           <li>
+            <Link to="/About">About</Link>
+          </li>
+          <li>
             <Link to="/Projects">Projects</Link>
+          </li>
+          <li>
+            <Link to="/SearchPexel">SerchPexel</Link>
+          </li>
+          <li>
+            <Link to="/Contact">Contact</Link>
           </li>
         </ul>
       </nav>
+      <main className="main-content">
+        {" "}
+        <Outlet />
+      </main>
 
-      <Outlet />
       <Footer />
     </div>
   );

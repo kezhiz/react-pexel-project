@@ -1,5 +1,12 @@
 nav {
+  position: fixed; /* 改成 fixed */
+  top: 0;
+  left: 0; /* 確保從最左邊開始 */
+  width: 100%; /* 滿版寬度 */
+  z-index: 1000;
   display: flex;
+  background-color: rgba(0, 0, 0, 0.506);
+  backdrop-filter: blur(10px); /* 額外推薦：加個毛玻璃效果質感更好 */
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.506);
   border: 1px solid rgba(255, 255, 255, 0.08);
