@@ -1,32 +1,104 @@
-nav {
-  position: fixed; /* 改成 fixed */
+.site-nav {
+  position: fixed;
   top: 0;
-  left: 0; /* 確保從最左邊開始 */
-  width: 100%; /* 滿版寬度 */
+  left: 0;
   z-index: 1000;
   display: flex;
-  background-color: rgba(0, 0, 0, 0.506);
-  backdrop-filter: blur(10px); /* 額外推薦：加個毛玻璃效果質感更好 */
-  justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.506);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+  min-height: 4.5rem;
   align-items: center;
-  padding: 0.5rem 5%;
-  font-size: 2rem;
-  .navbar_logo {
-    span {
-      color: #ac8b4a;
+  justify-content: space-between;
+  padding: 0.75rem clamp(1rem, 4vw, 4rem);
+  border-bottom: 1px solid var(--border);
+  background: rgba(9, 11, 13, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.navbar_logo {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+
+  span {
+    color: var(--accent);
+  }
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  a {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+    color: var(--text-muted);
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition:
+      color var(--transition),
+      background-color var(--transition);
+
+    &:hover,
+    &.active {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.08);
     }
   }
-  ul {
+}
+
+.nav-toggle {
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+
+  span {
+    width: 1.1rem;
+    height: 2px;
+    background: var(--text-primary);
+  }
+}
+
+@media (max-width: 720px) {
+  .site-nav {
+    min-height: 4rem;
+  }
+
+  .nav-toggle {
     display: flex;
-    justify-content: flex-end;
-    margin-right: 2rem;
-    li {
-      padding: 0.5rem 1rem;
-      a {
-        font-size: 1.25rem;
-      }
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    left: 1rem;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(9, 11, 13, 0.96);
+
+    &.active {
+      display: flex;
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
     }
   }
 }

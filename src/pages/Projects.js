@@ -3,9 +3,11 @@ import grade from "./images/grade.png";
 
 const Projects = () => {
   return (
-    <div className="content" style={{ minHeight: "80vh" }}>
+    <section className="content">
       <div className="title">
+        <p className="eyebrow">Selected Work</p>
         <h1>My Projects</h1>
+        <p>陸續增加中...</p>
       </div>
       <div className="projects-container">
         <div className="project-card">
@@ -23,8 +25,8 @@ const Projects = () => {
               <span>SCSS</span>
             </div>
             <p>
-              A form practice project for entering grades and calculating
-              results.
+              A grade entry tool that practices form handling, validation, and
+              result calculation in a simple browser interface.
             </p>
           </div>
           <div className="card_btn">
@@ -49,7 +51,7 @@ const Projects = () => {
         </div>
       </div>
 
-      <div className="projects-container">
+      {/* <div className="projects-container">
         <div className="project-card">
           <img
             src={grade}
@@ -89,8 +91,8 @@ const Projects = () => {
             </a>
           </div>
         </div>
-      </div>
-    </div>
+      </div> */}
+    </section>
   );
 };
 

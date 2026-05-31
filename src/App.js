@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, HashRouter, Outlet } from "react-router-dom";
+import { Route, Routes, HashRouter } from "react-router-dom";
 
 import SearchPexel from "./pages/SearchPexel";
 import HomePage from "./pages/HomePage";
@@ -8,9 +8,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Page404 from "./pages/Page404";
 
-import DotGrid from "./components/DotGrid";
-import CurvedLoop from "./components/CurvedLoop";
-import "./styles/style.css";
+import "./styles/style.scss";
 import Layout from "./Layout";
 
 function App() {

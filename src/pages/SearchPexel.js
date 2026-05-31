@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Search from "../components/Search";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Picture from "../components/Picture";
+import Search from "../components/Search";
 
 const AUTH = process.env.REACT_APP_PEXELS_API_KEY;
 const PER_PAGE = 15;
@@ -20,14 +20,21 @@ const getPhotosUrl = (query, page, perPage = PER_PAGE) => {
   return `https://api.pexels.com/v1/curated?${params.toString()}`;
 };
 
-const Homepage = () => {
+const SearchPexel = () => {
   const [input, setInput] = useState("");
   const [photos, setPhotos] = useState([]);
   const [page, setPage] = useState(1);
   const [currentSearch, setCurrentSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchPhotos = useCallback(async (query, pageNumber) => {
+    if (!AUTH) {
+      throw new Error(
+        "Missing Pexels API key. Add REACT_APP_PEXELS_API_KEY to .env.",
+      );
+    }
+
     const result = await axios.get(getPhotosUrl(query, pageNumber), {
       headers: { Authorization: AUTH },
     });
@@ -37,16 +44,25 @@ const Homepage = () => {
 
   const search = useCallback(async () => {
     const query = input.trim();
-    const nextPhotos = await fetchPhotos(query, 1);
+    setIsLoading(true);
+    setError("");
 
-    setPhotos(nextPhotos);
-    setCurrentSearch(query);
-    setPage(1);
+    try {
+      const nextPhotos = await fetchPhotos(query, 1);
+      setPhotos(nextPhotos);
+      setCurrentSearch(query);
+      setPage(1);
+    } catch (err) {
+      setError(err.message || "Unable to load photos.");
+    } finally {
+      setIsLoading(false);
+    }
   }, [fetchPhotos, input]);
 
   const morePicture = async () => {
     if (isLoading) return;
     setIsLoading(true);
+    setError("");
 
     try {
       const nextPage = page + 1;
@@ -58,32 +74,57 @@ const Homepage = () => {
 
       setPhotos((prevPhotos) => [...prevPhotos, ...uniquePhotos]);
       setPage(nextPage);
+    } catch (err) {
+      setError(err.message || "Unable to load more photos.");
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPhotos("", 1).then((initialPhotos) => {
-      setPhotos(initialPhotos);
-    });
+    setIsLoading(true);
+    fetchPhotos("", 1)
+      .then((initialPhotos) => {
+        setPhotos(initialPhotos);
+      })
+      .catch((err) => {
+        setError(err.message || "Unable to load photos.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [fetchPhotos]);
 
   return (
-    <div style={{ minHeight: "100vh" }}>
-      <Search search={search} setInput={setInput} />
+    <section className="pexels-page">
+      <header className="pexels-header">
+        <p className="eyebrow">API Project</p>
+        <h1>Pexels Image Search</h1>
+        <p>Pexels API 串接，使用者能快速使用關鍵字搜尋圖片素材。</p>
+      </header>
+
+      <Search search={search} setInput={setInput} isLoading={isLoading} />
+
+      {error && <p className="status-message status-message--error">{error}</p>}
+      {!error && !isLoading && photos.length === 0 && (
+        <p className="status-message">No photos found. Try another keyword.</p>
+      )}
+
       <div className="pictures">
         {photos.map((photo) => (
           <Picture data={photo} key={photo.id} />
         ))}
       </div>
-      <div className="morePicture">
-        <button onClick={morePicture} disabled={isLoading}>
-          {isLoading ? "Loading..." : "Load more"}
-        </button>
-      </div>
-    </div>
+
+      {photos.length > 0 && (
+        <div className="morePicture">
+          <button onClick={morePicture} disabled={isLoading}>
+            {isLoading ? "Loading..." : "Load more"}
+          </button>
+        </div>
+      )}
+    </section>
   );
 };
 
-export default Homepage;
+export default SearchPexel;
