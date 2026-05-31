@@ -21,7 +21,7 @@ function HomePage() {
 
       <div className="home-hero__content">
         <p className="eyebrow">My Website</p>
-        <h1>Zhiyu's Portfolio</h1>
+        <h1>ZHIYU'S PORTFOLIO</h1>
         <h2 className="home-hero__lead">Web Dev/Game VFX Artist</h2>
         <div className="home-hero__actions">
           <Link className="btn_primary" to="/Projects">
