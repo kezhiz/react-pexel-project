@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/react-pexel-project/static/css/main.cef43c9e.css",
-    "main.js": "/react-pexel-project/static/js/main.8e3addd2.js",
+    "main.js": "/react-pexel-project/static/js/main.8a6d0c18.js",
     "static/media/grade.png": "/react-pexel-project/static/media/grade.82585d87fa284dcefe9f.png",
     "index.html": "/react-pexel-project/index.html",
     "main.cef43c9e.css.map": "/react-pexel-project/static/css/main.cef43c9e.css.map",
-    "main.8e3addd2.js.map": "/react-pexel-project/static/js/main.8e3addd2.js.map"
+    "main.8a6d0c18.js.map": "/react-pexel-project/static/js/main.8a6d0c18.js.map"
   },
   "entrypoints": [
     "static/css/main.cef43c9e.css",
-    "static/js/main.8e3addd2.js"
+    "static/js/main.8a6d0c18.js"
   ]
 }
