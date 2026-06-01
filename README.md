@@ -1,18 +1,37 @@
-# React Pexel Image Search Project
+網址連結： https://kezhiz.github.io/react-pexel-project/
 
-這是一個使用 React 開發的響應式圖片搜尋應用程式，透過串接 Pexels API，讓使用者可以即時搜尋並瀏覽高品質的攝影作品。
+20260602 增加所有頁面gsap動效
 
-## 🌐 專案演示
-- **Live Demo:** [點此查看](https://kezhiz.github.io/react-pexel-project/)
+# 個人作品集與動態影像搜尋系統
 
-## ✨ 核心功能
-- **關鍵字搜尋**：使用者可以輸入任意關鍵字尋找相關圖片。
-- **異步資料串接**：利用 Axios/Fetch 處理 API 請求，並實作讀取狀態（Loading State）。
-- **響應式設計**：採用 CSS Grid/Flexbox，確保在手機、平板與桌機上都有良好的視覺呈現。
-- **精選圖片載入**：首頁預設載入精選圖片，提升使用者初次進入的體驗。
+本專案是單頁面應用程式 (SPA)，整合動態視覺特效、第三方素材搜尋 API。
 
-## 🛠 使用技術
-- **Frontend**: React.js (Hooks: useState, useEffect)
-- **API**: Pexels API
-- **Styling**: CSS Modules / SASS
-- **Deployment**: GitHub Pages
+# Route Transitions
+
+- React Router
+  - 全域包覆各分頁組件。
+
+# 第三方 API 整合服務
+
+- Pexels API、React 狀態管理
+  - 在資料尚未回傳前自動鎖定按鈕，徹底根除使用者因連續點擊導致的重複非同步請求，降低 API 伺服器負載。
+  - 支援 `Enter` 鍵直接觸發 API 請求。
+
+# 動態視覺與交錯動畫
+
+- GSAP動畫庫
+  - 當路由變更時，全域偵測，製作透明度、位移與縮放的轉場。
+  - 透過原生 DOM 選擇器動態選取標題、段落與按鈕參數讓網頁元素依序淡入。
+
+# 響應式設計
+
+- CSS3 現代版面排版屬性
+  - 在瀏覽器中預留正方形的渲染空間，徹底防止圖片載入後的排版結構塌陷。
+  - 實作彈性寬度，維持正確的影像比例不拉伸。
+
+---
+
+# 專案成效
+
+- 結合GSAP與 React Router，消除傳統網頁跳轉的白屏時間。
+- 透過CSS佔位設計與非同步按鈕鎖定機制，確保網頁在不同裝置與網路速度下，皆能保持排版穩定、防止效能浪費。

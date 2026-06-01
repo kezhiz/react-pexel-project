@@ -55,7 +55,6 @@ function About() {
               <span>CSS / SCSS</span>
               <span>JavaScript</span>
               <span>React</span>
-              <span>Responsive UI</span>
             </div>
           </div>
           <div className="skill-group">

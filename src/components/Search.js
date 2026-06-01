@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useRef, useCallback } from "react";
 
 const Search = ({ search, setInput, isLoading }) => {
-  const inputHandler = (e) => {
-    setInput(e.target.value);
-  };
+  const inputRef = useRef(null);
+  const handleSearchTrigger = useCallback(() => {
+    if (!inputRef.current) return;
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    const queryValue = inputRef.current.value.trim();
+    if (queryValue) {
+      setInput(queryValue);
       search();
     }
-  };
+  }, [search, setInput]);
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        handleSearchTrigger();
+      }
+    },
+    [handleSearchTrigger],
+  );
 
   return (
     <div className="search">
       <input
+        ref={inputRef}
         className="input"
-        onChange={inputHandler}
         onKeyDown={handleKeyDown}
         type="text"
         placeholder="Search photos..."
