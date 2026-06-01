@@ -1,40 +1,34 @@
-import React, { useRef, useCallback } from "react";
+import React, { useCallback } from "react";
 
 const Search = ({ search, setInput, isLoading }) => {
-  const inputRef = useRef(null);
-  const handleSearchTrigger = useCallback(() => {
-    if (!inputRef.current) return;
-
-    const queryValue = inputRef.current.value.trim();
-    if (queryValue) {
-      setInput(queryValue);
-      search();
-    }
-  }, [search, setInput]);
-
-  const handleKeyDown = useCallback(
+  const handleInputChange = useCallback(
     (e) => {
-      if (e.key === "Enter") {
-        handleSearchTrigger();
-      }
+      setInput(e.target.value);
     },
-    [handleSearchTrigger],
+    [setInput],
+  );
+
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      search();
+    },
+    [search],
   );
 
   return (
-    <div className="search">
+    <form className="search" onSubmit={handleSubmit}>
       <input
-        ref={inputRef}
         className="input"
-        onKeyDown={handleKeyDown}
         type="text"
         placeholder="Search photos..."
         aria-label="Search Pexels photos"
+        onChange={handleInputChange}
       />
-      <button className="button" onClick={search} disabled={isLoading}>
+      <button type="submit" className="button" disabled={isLoading}>
         {isLoading ? "..." : "Search"}
       </button>
-    </div>
+    </form>
   );
 };
 
