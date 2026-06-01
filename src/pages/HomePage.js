@@ -8,7 +8,6 @@ import { useGSAP } from "@gsap/react";
 function HomePage() {
   const containerRef = useRef(null);
 
-  // 寫入標題浮出動畫
   useGSAP(
     () => {
       gsap.from(".animate-title", {
@@ -20,7 +19,7 @@ function HomePage() {
       });
     },
     { scope: containerRef },
-  ); // 限制動畫只在這個容器內生效
+  );
   return (
     <section ref={containerRef} className="home-hero">
       <div className="home-hero__grid" aria-hidden="true">
